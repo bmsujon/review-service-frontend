@@ -29,6 +29,8 @@ import {
   Redo,
 } from 'lucide-react';
 import type { ReviewType, EmploymentStatus } from '../../constants';
+import { useQueryClient } from '@tanstack/react-query';
+import React from 'react';
 
 interface ValidationErrors {
   companyName?: string;
@@ -67,6 +69,7 @@ const SubmitReview = () => {
   const [shareName, setShareName] = useState(false);
   const [reviewerName, setReviewerName] = useState('');
   const [errors, setErrors] = useState<ValidationErrors>({});
+  const queryClient = useQueryClient();
 
   const { mutate: submitReview, isPending } = useMutation({
     mutationFn: () => {
@@ -94,6 +97,9 @@ const SubmitReview = () => {
       });
     },
     onSuccess: () => {
+      // Invalidate both recentReviews and stats queries
+      queryClient.invalidateQueries({ queryKey: ['recentReviews'] });
+      queryClient.invalidateQueries({ queryKey: ['stats'] });
       toast.success('Review submitted successfully!');
       navigate('/');
     },
@@ -110,16 +116,6 @@ const SubmitReview = () => {
       StarterKit.configure({
         heading: {
           levels: [1, 2, 3],
-        },
-        bold: {
-          HTMLAttributes: {
-            class: 'font-bold',
-          },
-        },
-        italic: {
-          HTMLAttributes: {
-            class: 'italic',
-          },
         },
       }),
       Underline,
@@ -138,7 +134,6 @@ const SubmitReview = () => {
     content: content,
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      console.log('Editor content updated:', html);
       setContent(html);
     },
     editorProps: {
@@ -146,7 +141,15 @@ const SubmitReview = () => {
         class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none min-h-[200px] p-4 prose-headings:font-semibold prose-p:my-2 prose-ul:my-2 prose-ol:my-2 prose-blockquote:border-l-4 prose-blockquote:border-gray-300 prose-blockquote:pl-4 prose-blockquote:italic prose-code:bg-gray-100 prose-code:px-1 prose-code:rounded prose-code:text-sm',
       },
     },
+    autofocus: true,
   });
+
+  // Remove the focus effect since we're using autofocus
+  React.useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [content, editor]);
 
   const validateStep = () => {
     const newErrors: ValidationErrors = {};
@@ -216,15 +219,6 @@ const SubmitReview = () => {
     setErrors({});
   };
 
-  const handleBold = () => {
-    if (editor) {
-      console.log('Before bold:', editor.getHTML());
-      editor.chain().focus().toggleBold().run();
-      console.log('After bold:', editor.getHTML());
-      console.log('Is bold active:', editor.isActive('bold'));
-    }
-  };
-
   const ToolbarButton = ({ 
     onClick, 
     isActive, 
@@ -237,7 +231,11 @@ const SubmitReview = () => {
     title: string;
   }) => (
     <button
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+      }}
       className={`p-2 rounded hover:bg-gray-200 transition-colors ${
         isActive ? 'bg-gray-200 text-blue-600' : 'text-gray-700'
       }`}
@@ -532,28 +530,44 @@ const SubmitReview = () => {
                       <div className="flex flex-wrap gap-1">
                         <div className="flex gap-1 border-r border-gray-200 pr-2 mr-2">
                           <ToolbarButton
-                            onClick={handleBold}
+                            onClick={() => {
+                              if (editor) {
+                                editor.chain().focus().toggleBold().run();
+                              }
+                            }}
                             isActive={editor?.isActive('bold')}
                             title="Bold"
                           >
                             <Bold size={18} />
                           </ToolbarButton>
                           <ToolbarButton
-                            onClick={() => editor?.chain().focus().toggleItalic().run()}
+                            onClick={() => {
+                              if (editor) {
+                                editor.chain().focus().toggleItalic().run();
+                              }
+                            }}
                             isActive={editor?.isActive('italic')}
                             title="Italic"
                           >
                             <Italic size={18} />
                           </ToolbarButton>
                           <ToolbarButton
-                            onClick={() => editor?.chain().focus().toggleUnderline().run()}
+                            onClick={() => {
+                              if (editor) {
+                                editor.chain().focus().toggleUnderline().run();
+                              }
+                            }}
                             isActive={editor?.isActive('underline')}
                             title="Underline"
                           >
                             <UnderlineIcon size={18} />
                           </ToolbarButton>
                           <ToolbarButton
-                            onClick={() => editor?.chain().focus().toggleStrike().run()}
+                            onClick={() => {
+                              if (editor) {
+                                editor.chain().focus().toggleStrike().run();
+                              }
+                            }}
                             isActive={editor?.isActive('strike')}
                             title="Strikethrough"
                           >
