@@ -1,4 +1,4 @@
-import type { ReviewType, EmploymentStatus, ReviewStatus } from '../constants';
+import type { ReviewType, ReviewStatus } from '../constants';
 
 export interface User {
   id: number;

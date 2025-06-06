@@ -1,12 +1,3 @@
-type LogLevel = 'info' | 'warn' | 'error' | 'debug';
-
-interface LogMessage {
-  level: LogLevel;
-  message: string;
-  data?: any;
-  timestamp: string;
-}
-
 const isDevelopment = import.meta.env.DEV;
 
 export const logger = {

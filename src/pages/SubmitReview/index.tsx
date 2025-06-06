@@ -3,14 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { reviewService } from '../../services/reviewService';
 import toast from 'react-hot-toast';
-import type { Review } from '../../types';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import { REVIEW_TYPES, EMPLOYMENT_STATUS } from '../../constants';
-import type { ReviewType, EmploymentStatus } from '../../constants';
 import { 
   Bold, 
   Italic, 
@@ -30,6 +28,7 @@ import {
   Undo,
   Redo,
 } from 'lucide-react';
+import type { ReviewType, EmploymentStatus } from '../../constants';
 
 interface ValidationErrors {
   companyName?: string;

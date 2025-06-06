@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { reviewService } from '../services/reviewService';
-import type { Review, ReviewFilters } from '../types';
+import type { ReviewFilters } from '../types';
 import toast from 'react-hot-toast';
 
 export const useReviews = (filters: ReviewFilters = {}) => {

@@ -3,15 +3,6 @@ import type { AxiosInstance } from 'axios';
 import type { ApiError } from '../types';
 import { logger } from '../utils/logger';
 
-// Define the type for Vite's env variables
-interface ImportMetaEnv {
-  readonly VITE_API_BASE_URL: string;
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
-}
-
 // Default API URL if environment variable is not set
 const DEFAULT_API_URL = 'http://localhost:8080/api/v1';
 

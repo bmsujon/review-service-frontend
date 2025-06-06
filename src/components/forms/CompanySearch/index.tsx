@@ -10,7 +10,7 @@ interface CompanySearchProps {
 const CompanySearch = ({ onSelect, selectedCompany, error }: CompanySearchProps) => {
   const [companyName, setCompanyName] = useState(selectedCompany?.name || '');
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [suggestions, setSuggestions] = useState<Company[]>([]);
+  const [suggestions] = useState<Company[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value;

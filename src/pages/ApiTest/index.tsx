@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { reviewService } from '../../services/reviewService';
 import { logger } from '../../utils/logger';
-import type { Review, PaginatedResponse } from '../../types';
 
 const ApiTest = () => {
   const [results, setResults] = useState<Record<string, any>>({});

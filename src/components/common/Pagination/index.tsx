@@ -59,7 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPage
         Previous
       </button>
 
-      {getVisiblePages().map((page, index) =>
+      {getVisiblePages().map((page) =>
         page === null ? renderEllipsis() : renderPageButton(page)
       )}
 

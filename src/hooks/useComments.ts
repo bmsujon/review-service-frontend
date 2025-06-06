@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { commentService } from '../services/commentService';
-import type { Comment } from '../types';
 import toast from 'react-hot-toast';
 
 export const useComments = (reviewId: number, page = 0, size = 10) => {
@@ -17,7 +16,7 @@ export const useComments = (reviewId: number, page = 0, size = 10) => {
 
   const createCommentMutation = useMutation({
     mutationFn: ({ content, parentId }: { content: string; parentId?: number }) =>
-      commentService.createComment(reviewId, { content, parentId }),
+      commentService.createComment(reviewId, content, parentId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['comments', reviewId] });
       toast.success('Comment added successfully!');
