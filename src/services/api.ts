@@ -9,8 +9,8 @@ const DEFAULT_API_URL = 'http://localhost:8080/api/v1';
 // Get API URL from environment or use default
 const API_BASE_URL = import.meta.env['VITE_API_BASE_URL'] || DEFAULT_API_URL;
 
-// Log the API URL being used
-logger.info('Using API URL:', API_BASE_URL);
+// Log the API URL for debugging
+console.log('API Base URL:', API_BASE_URL);
 
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
